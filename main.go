@@ -23,7 +23,7 @@ func main() {
 	log.Printf("Server Running On\n")
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
-		log.Prinln(err.Error())
+		log.Println(err.Error())
 	}
 
 	// router := gin.New()
