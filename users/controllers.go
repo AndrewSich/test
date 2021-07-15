@@ -34,12 +34,14 @@ func CreateUser(c *gin.Context) {
 	db := config.GetDB()
 	var form FormUser
 	if err := c.ShouldBindJSON(&form); err != nil {
+		fmt.Println("[FLOME] => error: ", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"data": err.Error()})
 		return
 	}
 
+	uid := uuid.New()
 	user := User{
-		ID:           uuid.New(),
+		ID:           uid.String(),
 		Nickname:     form.Nickname,
 		Username:     form.Username,
 		Email:        form.Email,
