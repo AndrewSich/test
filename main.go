@@ -23,7 +23,7 @@ func main() {
 
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gun.H{"data": "WELCOME TO REST API FLOME BY ANDREW SETYAWAN"})
+		c.JSON(http.StatusOK, gin.H{"data": "WELCOME TO REST API FLOME BY ANDREW SETYAWAN"})
 	})
 
 	rU := r.Group("/")
