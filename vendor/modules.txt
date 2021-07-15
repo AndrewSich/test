@@ -15,3 +15,5 @@ github.com/mattn/go-isatty
 golang.org/x/net/context
 # gopkg.in/bluesuncorp/validator.v5 v5.9.1
 gopkg.in/bluesuncorp/validator.v5
+
+github.com/google/uuid
