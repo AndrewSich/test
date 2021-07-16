@@ -24,7 +24,7 @@ func Login(c *gin.Context) {
 	body := c.Request.Body
 	d, _ := ioutil.ReadAll(body)
 	fmt.Println(body)
-	fmt.Println(d)
+	fmt.Println(string(d))
 
 	if err := c.ShouldBindJSON(&form); err != nil {
 		fmt.Println("[FLOME] => error: ", err.Error())
