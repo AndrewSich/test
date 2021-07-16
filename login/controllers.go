@@ -2,6 +2,7 @@ package login
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"test/config"
@@ -19,6 +20,11 @@ func Login(c *gin.Context) {
 	db := config.GetDB()
 	var form FormLogin
 	var user users.User
+
+	body := c.Request.Body
+	d, _ := ioutil.ReadAll(body)
+	fmt.Println(body)
+	fmt.Println(d)
 
 	if err := c.ShouldBindJSON(&form); err != nil {
 		fmt.Println("[FLOME] => error: ", err.Error())
