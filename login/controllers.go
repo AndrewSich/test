@@ -1,6 +1,9 @@
 package login
 
 import (
+	"fmt"
+	"net/http"
+
 	"test/config"
 	"test/users"
 
@@ -23,8 +26,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	username = form.Username
-	password = form.Password
+	username := form.Username
+	password := form.Password
 	db.Model(&users.User{}).Where("username = ? AND password = ?", username, password).Find(&user)
 	if user.Username == username && user.Password == password {
 
