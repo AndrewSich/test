@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"test/config"
+	"test/login"
+	"test/messages"
 	"test/users"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +16,7 @@ import (
 
 func Migrate(db *gorm.DB) {
 	db.AutoMigrate(&users.User{})
+	db.AutoMigrate(&messages.Message{})
 }
 
 func main() {
@@ -27,6 +30,11 @@ func main() {
 	})
 
 	rU := r.Group("/")
+	rL := r.Group("/")
+
+	// Login
+	login.RouterLogin(rL.Group("/login"))
+	// Users
 	users.RouterUsers(rU.Group("/users"))
 
 	//Run Server
