@@ -43,8 +43,9 @@ func Login(c *gin.Context) {
 		// }
 
 		c.JSON(http.StatusOK, gin.H{"data": "Congrats, Success login.."})
-	}
+	} else {
 
-	c.JSON(http.StatusBadRequest, gin.H{"error": "Username or Password Not Found", username: user.Username, password: user.Password})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Username or Password Not Found"})
+	}
 
 }
