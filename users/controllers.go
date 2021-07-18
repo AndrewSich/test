@@ -27,7 +27,7 @@ func FindAllUser(c *gin.Context) {
 	var users []User
 
 	db.Model(&User{}).Find(&users)
-	c.JSON(http.StatusOK, gin.H{"data": users})
+	c.JSON(http.StatusOK, users)
 }
 
 // Find User By ID
@@ -37,7 +37,7 @@ func FindUserByID(c *gin.Context) {
 
 	uid := c.Param("id")
 	db.Model(&User{}).Where("id = ?", uid).Take(&user)
-	c.JSON(http.StatusOK, gin.H{"data": user})
+	c.JSON(http.StatusOK, user)
 }
 
 // Create a New User
@@ -65,5 +65,5 @@ func CreateUser(c *gin.Context) {
 	}
 
 	db.Model(&User{}).Create(&user)
-	c.JSON(http.StatusOK, gin.H{"data": user})
+	c.JSON(http.StatusOK, user)
 }
