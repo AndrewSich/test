@@ -30,6 +30,17 @@ func FindAllUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
+// Find User By ID
+func FindUserByID(c *gin.Context) {
+	db := config.GetDB()
+	var user User
+
+	uid := c.Param("id")
+	db.Model(&User{}).Where("id = ?", uid).Take(&user)
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}
+
+// Create a New User
 func CreateUser(c *gin.Context) {
 	db := config.GetDB()
 	var form FormUser

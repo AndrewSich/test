@@ -6,5 +6,6 @@ import (
 
 func RouterUsers(route *gin.RouterGroup) {
 	route.GET("/", FindAllUser)
+	route.GET("/:id", FindUserByID)
 	route.POST("/", CreateUser)
 }
