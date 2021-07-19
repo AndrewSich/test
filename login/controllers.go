@@ -22,6 +22,7 @@ func Login(c *gin.Context) {
 
 	username := c.Request.FormValue("username")
 	password := c.Request.FormValue("password")
+	fmt.Println(password, username)
 	if username == "" || password == "" {
 
 		c.JSON(400, gin.H{"data": "username or password invalid"})
