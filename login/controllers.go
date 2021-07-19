@@ -1,6 +1,9 @@
 package login
 
 import (
+	"fmt"
+	"io/ioutil"
+
 	"test/config"
 	"test/users"
 
@@ -16,6 +19,10 @@ func Login(c *gin.Context) {
 	// CORS
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+	body := c.Request.Body
+	b, _ := ioutil.ReadAll(body)
+	fmt.Println(string(b))
 
 	db := config.GetDB()
 	var user users.User
