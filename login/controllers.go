@@ -27,7 +27,7 @@ func Login(c *gin.Context) {
 		c.JSON(400, gin.H{"data": "username or password invalid"})
 	} else {
 		db.Model(&users.User{}).Where("username = ? AND password = ?", username, password).Find(&user)
-		if user.Username == username && user.password == password {
+		if user.Username == username && user.Password == password {
 
 			c.JSON(200, user)
 
