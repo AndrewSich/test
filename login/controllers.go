@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type FormLogin struct {
-	Username string `json:"username" form:"username"`
-	Password string `json:"password"form:"password"`
-}
+// type FormLogin struct {
+// 	Username string `json:"username" form:"username"`
+// 	Password string `json:"password"form:"password"`
+// }
 
 func Login(c *gin.Context) {
 	// CORS
@@ -18,7 +18,6 @@ func Login(c *gin.Context) {
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 	db := config.GetDB()
-	var form FormLogin
 	var user users.User
 
 	username := c.Param("username")
