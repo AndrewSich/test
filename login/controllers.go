@@ -17,8 +17,9 @@ type FormLogin struct {
 }
 
 func Login(c *gin.Context) {
-	c.Header()
-	c.Header()
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 	db := config.GetDB()
 	var form FormLogin
