@@ -22,14 +22,18 @@ func Login(c *gin.Context) {
 
 	username := c.Param("username")
 	password := c.Param("password")
-	db.Model(&users.User{}).Where("username = ? AND password = ?", username, password).Find(&user)
-	if user.Username == username && user.Password == password {
+	if username == "" || password == "" {
 
-		c.JSON(200, user)
-
+		c.JSON(400, gin.H{"data": "username or password invalid"})
 	} else {
+		db.Model(&users.User{}).Where("username = ? AND password = ?", username, password).Find(&user)
+		if user.Username == username && user.password == password {
 
-		c.JSON(400, gin.H{"data": "Username or Password Not Found"})
+			c.JSON(200, user)
+
+		} else {
+			c.JSON(400, gin.H{"data": "username or password not found!!"})
+		}
 	}
 
 }
