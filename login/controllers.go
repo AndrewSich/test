@@ -1,10 +1,6 @@
 package login
 
 import (
-	"fmt"
-	"io/ioutil"
-	"net/http"
-
 	"test/config"
 	"test/users"
 
