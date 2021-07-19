@@ -1,9 +1,6 @@
 package login
 
 import (
-	"fmt"
-	"io/ioutil"
-
 	"test/config"
 	"test/users"
 
@@ -20,15 +17,11 @@ func Login(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	body := c.Request.Body
-	b, _ := ioutil.ReadAll(body)
-	fmt.Println(string(b))
-
 	db := config.GetDB()
 	var user users.User
 
-	username := c.Param("username")
-	password := c.Param("password")
+	username := c.Request.FormValue("username")
+	password := c.Request.FormValue("password")
 	if username == "" || password == "" {
 
 		c.JSON(400, gin.H{"data": "username or password invalid"})
