@@ -17,40 +17,23 @@ type FormLogin struct {
 }
 
 func Login(c *gin.Context) {
+	c.Header()
+	c.Header()
+
 	db := config.GetDB()
 	var form FormLogin
 	var user users.User
 
-	body := c.Request.Body
-	b, _ := ioutil.ReadAll(body)
-	print(string(b))
-
-	if err := c.ShouldBindJSON(&form); err != nil {
-		fmt.Println("[FLOME] => error: ", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{"data": err.Error()})
-		return
-	}
-
-	username := form.Username
-	password := form.Password
+	username := c.Param("username")
+	password := c.Param("password")
 	db.Model(&users.User{}).Where("username = ? AND password = ?", username, password).Find(&user)
 	if user.Username == username && user.Password == password {
 
-		// data := map[string]interface{}{
-		// 	"id":           user.ID,
-		// 	"nickname":     user.Nickname,
-		// 	"username":     user.Username,
-		// 	"email":        user.Email,
-		// 	"address":      user.Address,
-		// 	"profil_image": user.ProfileImage,
-		// 	"banner_image": user.BannerImage,
-		// 	"bio":          user.Bio,
-		// }
+		c.JSON(200, user)
 
-		c.JSON(http.StatusOK, gin.H{"data": "Congrats, Success login.."})
 	} else {
 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username or Password Not Found"})
+		c.JSON(400, gin.H{"data": "Username or Password Not Found"})
 	}
 
 }

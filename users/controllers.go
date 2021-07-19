@@ -23,21 +23,34 @@ type FormUser struct {
 
 // Find All User
 func FindAllUser(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	//c.Header("Access-Control-Allow-Credentials", "true")
+	// 	c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+
 	db := config.GetDB()
 	var users []User
 
 	db.Model(&User{}).Find(&users)
-	c.JSON(http.StatusOK, users)
+	c.JSON(200, users)
 }
 
 // Find User By ID
 func FindUserByID(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	//c.Header("Access-Control-Allow-Credentials", "true")
+	//c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+
 	db := config.GetDB()
 	var user User
 
 	uid := c.Param("id")
 	db.Model(&User{}).Where("id = ?", uid).Take(&user)
-	c.JSON(http.StatusOK, user)
+
+	c.JSON(200, user)
 }
 
 // Create a New User
