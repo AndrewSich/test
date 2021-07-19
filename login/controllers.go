@@ -1,16 +1,17 @@
 package login
 
 import (
+	"fmt"
 	"test/config"
 	"test/users"
 
 	"github.com/gin-gonic/gin"
 )
 
-// type FormLogin struct {
-// 	Username string `json:"username" form:"username"`
-// 	Password string `json:"password"form:"password"`
-// }
+type FormLogin struct {
+	Username string `json:"username" form:"username"`
+	Password string `json:"password"form:"password"`
+}
 
 func Login(c *gin.Context) {
 	// CORS
@@ -20,8 +21,15 @@ func Login(c *gin.Context) {
 	db := config.GetDB()
 	var user users.User
 
-	username := c.Request.FormValue("username")
-	password := c.Request.FormValue("password")
+	var form FormLogin
+	if err := c.ShouldBindJSON(&form); err != nil {
+		fmt.Println("[FLOME] => error: ", err.Error())
+		c.JSON(400, gin.H{"data": err.Error()})
+		return
+	}
+
+	username := form.Username
+	password := form.Password
 	fmt.Println(password, username)
 	if username == "" || password == "" {
 
