@@ -3,7 +3,7 @@ const messages = document.querySelector('#messages')
 const username = document.querySelector('#username')
 const send = document.querySelector('#send')
 
-const url = "ws://" + "levxa-web-server.herokuapp.com" + "/ws";
+const url = "ws://" + "levxa-web-server.herokuapp.com" + "/socket";
 const ws = new WebSocket(url);
 
 ws.onmessage = function (msg) {
