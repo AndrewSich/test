@@ -1,11 +1,9 @@
 package messages
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"test/config"
 )
 
 type NewMessage struct {
