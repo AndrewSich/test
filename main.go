@@ -12,6 +12,9 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"github.com/jinzhu/gorm"
+
+	static "github.com/gin-contrib/static"
+	"gopkg.in/olahol/melody.v1"
 )
 
 func Migrate(db *gorm.DB) {
@@ -25,17 +28,28 @@ func main() {
 	defer db.Close()
 
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"data": "WELCOME TO REST API FLOME BY ANDREW SETYAWAN"})
+	m := melody.New()
+
+	// Static file route
+	r.Use(static.Serve("/", static.LocalFile("./public", true)))
+	// WEB SOCKET ENDOINT
+	r.GET("/socket", func(c *gin.Context) {
+		m.HandleRequest(c.Writer, c.Request)
+	})
+	m.HandleMessage(func(s *melody.Session, msg []byte) {
+		m.Broadcast(msg)
 	})
 
 	rU := r.Group("/")
 	rL := r.Group("/")
+	rM := r.Group("/")
 
 	// Login
 	login.RouterLogin(rL.Group("/login"))
 	// Users
 	users.RouterUsers(rU.Group("/users"))
+	// Messages
+	messages.RouterMessages(rM.Group("/messages"))
 
 	//Run Server
 	fmt.Println("Server Running on==>FLOME Server by ANDREW SETYAWAN")
