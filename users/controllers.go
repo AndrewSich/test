@@ -76,7 +76,7 @@ func CreateUser(c *gin.Context) {
 		CreatedAt:    time.Now(),
 	}
 	profile := Profile{
-		ID:           &user.ID,
+		ID:           user.ID,
 		Nickname:     form.Nickname,
 		Username:     form.Username,
 		Address:      form.Address,
@@ -99,7 +99,7 @@ func CreateUser(c *gin.Context) {
 // Add Contact
 func UserAddContact(c *gin.Context) {
 	db := config.GetDB()
-	var contact User
+	var contact Profile
 	var form FormUser
 
 	if err := c.ShouldBindJSON(&form); err != nil {
@@ -109,14 +109,14 @@ func UserAddContact(c *gin.Context) {
 	}
 
 	username := form.Username
-	db.Model(&User{}).Where("username = ?", username).Take(&contact)
+	db.Model(&Profile{}).Where("username = ?", username).Take(&contact)
 
 	uid := c.Param("id")
 	var user User
 	db.Model(&User{}).Where("id = ?", uid).Take(&user)
 
-	user.Contacts = append(user.Contacts, contact.ID)
-	db.Model(&User{}).Where("id = ?", uid).Update("contacts", &user)
+	// user.Contacts = []Profile{contact}
+	db.Model(&user).Association("Contacts").Append(&contact)
 
 	c.JSON(200, gin.H{"data": "success add contact"})
 }
