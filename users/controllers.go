@@ -95,8 +95,9 @@ func UserAddContact(c *gin.Context) {
 
 	username := form.Username
 	db.Model(&User{}).Where("username = ?", username).Take(&contact)
+	fmt.Println(&contact)
 
 	uid := c.Param("id")
-	db.Model(&User{}).Where("id = ?", uid).Update("contacts", &contact)
+	db.Model(&User{}).Where("id = ?", uid).Update("user_contacts", username)
 	c.JSON(200, gin.H{"data": "success add contact"})
 }
