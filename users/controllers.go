@@ -116,7 +116,7 @@ func UserAddContact(c *gin.Context) {
 	db.Model(&User{}).Where("id = ?", uid).Take(&user)
 
 	user.Contacts = []Profile{contact}
-	db.Omit("Contacts").Save(&user)
+	db.Omit("Contacts.*").Save(&user)
 	//db.Model(&user).Association("Contacts").Append(&contact)
 
 	c.JSON(200, gin.H{"data": "success add contact"})
