@@ -53,6 +53,10 @@ func FindUserByID(c *gin.Context) {
 
 // Create a New User
 func CreateUser(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
 	db := config.GetDB()
 	var form FormUser
 
@@ -98,6 +102,10 @@ func CreateUser(c *gin.Context) {
 
 // Add Contact
 func UserAddContact(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
 	db := config.GetDB()
 	var contact Profile
 	var form FormUser
@@ -124,6 +132,10 @@ func UserAddContact(c *gin.Context) {
 
 // List Contact
 func UserListContact(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
 	db := config.GetDB()
 	var contacts []Profile
 	var user User
