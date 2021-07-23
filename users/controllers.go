@@ -127,6 +127,8 @@ func UserListContact(c *gin.Context) {
 	db := config.GetDB()
 	var contacts []Profile
 
-	db.Model(&User{}).Association("Contacts").Find(&contacts)
+	uid := c.Param("id")
+
+	db.Model(&User{}).Where("id = ?", uid).Association("Contacts").Find(&contacts)
 	c.JSON(200, contacts)
 }
