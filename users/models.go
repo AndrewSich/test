@@ -14,6 +14,7 @@ type User struct {
 	ProfileImage string    `gorm:"column:profile_image" json:"profile_image"`
 	BannerImage  string    `gorm:"column:banner_image" json:"banner_image"`
 	Bio          string    `gorm:"column:bio;size:1024" json"bio"`
+	Contacts     []*User   `gorm:"many2many:user_contacts" json:"contacts"`
 	CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }

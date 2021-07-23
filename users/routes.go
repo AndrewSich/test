@@ -8,4 +8,6 @@ func RouterUsers(route *gin.RouterGroup) {
 	route.GET("/", FindAllUser)
 	route.GET("/:id", FindUserByID)
 	route.POST("/", CreateUser)
+	// OPTIONS
+	route.POST("/:id/add", UserAddContact)
 }

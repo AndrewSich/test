@@ -80,3 +80,23 @@ func CreateUser(c *gin.Context) {
 	db.Model(&User{}).Create(&user)
 	c.JSON(http.StatusOK, user)
 }
+
+// Add Contact
+func UserAddContact(c *gin.Context) {
+	db := config.GetDB()
+	var contact User
+	var form FormUser
+
+	if err := c.ShouldBindJSON(&form); err != nil {
+		fmt.Println("[FLOME] => error: ", err.Error())
+		c.JSON(400, gin.H{"data": err.Error()})
+		return
+	}
+
+	username := form.Username
+	db.Model(&User{}).Where("username = ?", username).Take(&contact)
+
+	uid := c.Param("id")
+	db.Model(&User{}).Where("id = ?", uid).Update("contact", &contact)
+	c.JSON(200, gin.H{"data": "success add contact"})
+}
