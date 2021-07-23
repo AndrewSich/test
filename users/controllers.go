@@ -100,7 +100,7 @@ func UserAddContact(c *gin.Context) {
 	uid := c.Param("id")
 	var contacts []User
 
-	contacts := append(contacts, &contact)
-	db.Model(&User{}).Where("id = ?", uid).Update("user_contacts", contacts)
+	contacts = append(contacts, contact)
+	db.Model(&User{}).Where("id = ?", uid).Update("user_contacts", &contacts)
 	c.JSON(200, gin.H{"data": "success add contact"})
 }
