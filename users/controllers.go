@@ -41,8 +41,6 @@ func FindUserByID(c *gin.Context) {
 	// CORS
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	//c.Header("Access-Control-Allow-Credentials", "true")
-	//c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 
 	db := config.GetDB()
 	var user User
@@ -57,6 +55,7 @@ func FindUserByID(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	db := config.GetDB()
 	var form FormUser
+
 	if err := c.ShouldBindJSON(&form); err != nil {
 		fmt.Println("[FLOME] => error: ", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"data": err.Error()})
@@ -76,9 +75,25 @@ func CreateUser(c *gin.Context) {
 		Bio:          form.Bio,
 		CreatedAt:    time.Now(),
 	}
+	profile := Profile{
+		ID:           &user.ID,
+		Nickname:     form.Nickname,
+		Username:     form.Username,
+		Address:      form.Address,
+		ProfileImage: form.ProfileImage,
+		BannerImage:  form.BannerImage,
+		Bio:          form.Bio,
+		LastSeen:     time.Now(),
+	}
 
 	db.Model(&User{}).Create(&user)
-	c.JSON(http.StatusOK, user)
+	db.Model(&Profile{}).Create(&profile)
+	data := map[string]interface{}{
+		"user":    user,
+		"profile": profile,
+	}
+
+	c.JSON(http.StatusOK, data)
 }
 
 // Add Contact

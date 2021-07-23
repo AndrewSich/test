@@ -14,7 +14,18 @@ type User struct {
 	ProfileImage string    `gorm:"column:profile_image" json:"profile_image"`
 	BannerImage  string    `gorm:"column:banner_image" json:"banner_image"`
 	Bio          string    `gorm:"column:bio;size:1024" json"bio"`
-	Contacts     []string  `gorm:"column:contacts" json:"contacts"`
+	Contacts     []Profile `gorm:"many2many:user_contacts" json:"contacts"`
 	CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+}
+
+type Profile struct {
+	ID           string    `gorm:"primary_key" json: "id"`
+	Nickname     string    `gorm:"column:nickname" json:"nickname"`
+	Username     string    `gorm:"column:username" json:"username"`
+	Address      string    `gorm:"column:address" json:"address"`
+	ProfileImage string    `gorm:"column:profile_image" json:"profile_image"`
+	BannerImage  string    `gorm:"column:banner_image" json:"banner_image"`
+	Bio          string    `gorm:"column:bio" json:"bio"`
+	LastSeen     time.Time `gorm:"column:last_seen;default:CURRENT_TIMESTAMP" json:"last_seen"`
 }

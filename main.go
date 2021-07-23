@@ -18,6 +18,7 @@ import (
 
 func Migrate(db *gorm.DB) {
 	db.AutoMigrate(&users.User{})
+	db.AutoMigrate(&users.Profile{})
 	db.AutoMigrate(&messages.Message{})
 }
 
