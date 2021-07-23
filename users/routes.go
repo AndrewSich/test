@@ -10,4 +10,5 @@ func RouterUsers(route *gin.RouterGroup) {
 	route.POST("/", CreateUser)
 	// OPTIONS
 	route.POST("/:id/add", UserAddContact)
+	route.GET("/:id/list", UserListContact)
 }

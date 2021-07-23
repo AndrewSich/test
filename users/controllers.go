@@ -121,3 +121,12 @@ func UserAddContact(c *gin.Context) {
 
 	c.JSON(200, gin.H{"data": "success add contact"})
 }
+
+// List Contact
+func UserListContact(c *gin.Context) {
+	db := config.GetDB()
+	var contacts []Profile
+
+	db.Model(&User{}).Association("Contacts").Find(&contacts)
+	c.JSON(200, contacts)
+}
