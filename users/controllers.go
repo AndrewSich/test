@@ -173,7 +173,7 @@ func UserAddChat(c *gin.Context) {
 	childID := form.id
 
 	db.Model(&Profile{}).Where("id = ?", childID).Take(&profile)
-	data := chats.Chat{
+	data := &chats.Chat{
 		ParentID: parentID,
 		ChildID:  profile.ID,
 		Nickname: profile.Nickname,
@@ -205,7 +205,7 @@ func UserListChat(c *gin.Context) {
 	// }{}
 
 	uid := c.Param("id")
-	data = chats.FindAllChat(uid)
+	data := chats.FindAllChat(uid)
 	fmt.Println(data)
 
 	c.JSON(200, data)
