@@ -10,7 +10,7 @@ import (
 
 	"test/chats"
 	"test/config"
-	"test/messages"
+	//"test/messages"
 )
 
 type FormUser struct {
@@ -174,7 +174,7 @@ func UserAddChat(c *gin.Context) {
 	childID := form.id
 
 	db.Model(&Profile{}).Where("id = ?", childID).Take(&profile)
-	data := chat{
+	data := &chat{
 		ParentID: parentID,
 		ChildID:  profile.ID,
 		Nickname: profile.Nickname,
