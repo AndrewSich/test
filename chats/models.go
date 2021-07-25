@@ -13,7 +13,7 @@ type Chat struct {
 	Image             string    `gorm:"column:image" json:"image"`
 	LastMessage       string    `gorm:"column:last_message" json:"last-message"`
 	LastMessageStatus string    `gorm:"column:last_message_status" json:"last-message-status"`
-	LastMessageTime   time.Time `gorm:"column:last_message_time" json:"last-message-time"`
+	LastMessageTime   time.Time `gorm:"column:last_message_time;default:CURRENT_TIMESTAMP" json:"last-message-time"`
 }
 
 func FindAllChat(uid string) []Chat {
