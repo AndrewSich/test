@@ -14,6 +14,7 @@ import (
 )
 
 type FormUser struct {
+	Id           string `json:"id"`
 	Nickname     string `json:"nickname"`
 	Username     string `json:"username"`
 	Email        string `json:"email"`
@@ -159,10 +160,7 @@ func UserAddChat(c *gin.Context) {
 
 	db := config.GetDB()
 	var profile Profile
-	var form = struct {
-		id string `json:"id"`
-	}{}
-
+	var form FormUser
 	if err := c.ShouldBindJSON(&form); err != nil {
 		fmt.Println("[FLOME] => error: ", err.Error())
 		c.JSON(400, gin.H{"data": err.Error()})
@@ -170,7 +168,7 @@ func UserAddChat(c *gin.Context) {
 	}
 
 	parentID := c.Param("id")
-	childID := form.id
+	childID := form.Id
 
 	db.Model(&Profile{}).Where("id = ?", childID).Take(&profile)
 	data := chats.Chat{
