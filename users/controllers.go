@@ -194,21 +194,19 @@ func UserListChat(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	db := config.GetDB()
-	var chatt = struct {
-		ParentID          string    `json:"parent-id"`
-		ChildID           string    `json:"child-id"`
-		Nickname          string    `json:"nickname"`
-		Image             string    `json:"image"`
-		LastMessage       string    `json:"last-message"`
-		LastMessageStatus string    `json:"last-message-status"`
-		LastMessageTime   time.Time `json:"last-message-time"`
-	}{}
-	// var chat = &chats.Chat
-	var chats []chatt
+	// var chatt = []struct {
+	// 	ParentID          string    `json:"parent-id"`
+	// 	ChildID           string    `json:"child-id"`
+	// 	Nickname          string    `json:"nickname"`
+	// 	Image             string    `json:"image"`
+	// 	LastMessage       string    `json:"last-message"`
+	// 	LastMessageStatus string    `json:"last-message-status"`
+	// 	LastMessageTime   time.Time `json:"last-message-time"`
+	// }{}
 
 	uid := c.Param("id")
-	db.Model(&chats.Chat{}).Where("parent_id = ?", uid).Find(&chats)
+	chats = chats.FindAllChat(uid)
+	fmt.Println(chats)
 
 	c.JSON(200, chats)
 }

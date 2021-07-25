@@ -2,6 +2,8 @@ package chats
 
 import (
 	"time"
+
+	"test/config"
 )
 
 type Chat struct {
@@ -12,4 +14,12 @@ type Chat struct {
 	LastMessage       string    `gorm:"column:last_message" json:"last-message"`
 	LastMessageStatus string    `gorm:"column:last_message_status" json:"last-message-status"`
 	LastMessageTime   time.Time `gorm:"column:last_message_time" json:"last-message-time"`
+}
+
+func FindAllChat(uid string) []Chat {
+	db := config.GetDB()
+	var chats []Chat
+
+	db.Model(&Chat{}).Where("parent_id = ?", uid).Find(&chats)
+	return chats
 }
