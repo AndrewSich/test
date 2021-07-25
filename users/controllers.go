@@ -195,7 +195,8 @@ func UserListChat(c *gin.Context) {
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 	db := config.GetDB()
-	var chats []chats.Chat
+	var chat chats.Chat
+	var chats []chat
 
 	uid := c.Param("id")
 	db.Model(&chats.Chat{}).Where("parent_id = ?", uid).Take(&chats)
