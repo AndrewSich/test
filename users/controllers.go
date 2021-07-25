@@ -205,7 +205,8 @@ func UserListChat(c *gin.Context) {
 	// }{}
 
 	uid := c.Param("id")
-	chats = chats.FindAllChat(uid)
+	c := chats.New()
+	chats = c.FindAllChat(uid)
 	fmt.Println(chats)
 
 	c.JSON(200, chats)
