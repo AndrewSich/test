@@ -158,7 +158,6 @@ func UserAddChat(c *gin.Context) {
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 	db := config.GetDB()
-	var chat chats.Chat
 	var profile Profile
 	var form = struct {
 		id string `json:"id"`
@@ -174,14 +173,14 @@ func UserAddChat(c *gin.Context) {
 	childID := form.id
 
 	db.Model(&Profile{}).Where("id = ?", childID).Take(&profile)
-	data := &chat{
+	data := chats.Chat{
 		ParentID: parentID,
 		ChildID:  profile.ID,
 		Nickname: profile.Nickname,
 		Image:    profile.ProfileImage,
 	}
 
-	db.Model(&chat{}).Create(&data)
+	db.Model(&chats.Chat{}).Create(&data)
 	file := map[string]interface{}{
 		"status": "success",
 		"data":   data,
