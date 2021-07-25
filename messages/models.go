@@ -18,3 +18,14 @@ type Message struct {
 	SendTime      time.Time `gorm:"column:send_time;default:CURRENT_TIMESTAMP" json:"send_time"`
 	ReceiptServer time.Time `gorm:"column:receipt_server;default:CURRENT_TIMESTAMP" json:"receipt_server"`
 }
+
+// component penting
+// ID
+// toID
+// FromID
+// Status
+// Type
+// Data
+// ReceivedTime
+// SendTime
+// ReceiptServer

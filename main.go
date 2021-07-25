@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"test/chats"
 	"test/config"
 	"test/login"
 	"test/messages"
@@ -20,6 +21,7 @@ func Migrate(db *gorm.DB) {
 	db.AutoMigrate(&users.User{})
 	db.AutoMigrate(&users.Profile{})
 	db.AutoMigrate(&messages.Message{})
+	db.AutoMigrate(&chats.Chat{})
 }
 
 func main() {

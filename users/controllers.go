@@ -7,7 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
+
+	"test/chats"
 	"test/config"
+	"test/messages"
 )
 
 type FormUser struct {
@@ -100,6 +103,7 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, data)
 }
 
+// ========================== CONTACTS =======================================
 // Add Contact
 func UserAddContact(c *gin.Context) {
 	// CORS
@@ -145,4 +149,57 @@ func UserListContact(c *gin.Context) {
 
 	db.Model(&user).Association("Contacts").Find(&contacts)
 	c.JSON(200, contacts)
+}
+
+// ================================= CHATS ==================================
+func UserAddChat(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+	db := config.GetDB()
+	var chat chats.Chat
+	var profile Profile
+	var form = struct {
+		id string `json:"id"`
+	}{}
+
+	if err := c.ShouldBindJSON(&form); err != nil {
+		fmt.Println("[FLOME] => error: ", err.Error())
+		c.JSON(400, gin.H{"data": err.Error()})
+		return
+	}
+
+	parentID := c.Param("id")
+	childID := form.id
+
+	db.Model(&Profile{}).Where("id = ?", childID).Take(&profile)
+	data := chat{
+		ParentID: parentID,
+		ChildID:  profile.ID,
+		Nickname: profile.Nickname,
+		Image:    profile.ProfileImage,
+	}
+
+	db.Model(&chat{}).Create(&data)
+	file := map[string]interface{}{
+		"status": "success",
+		"data":   data,
+	}
+
+	c.JSON(200, file)
+}
+
+func UserListChat(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+	db := config.GetDB()
+	var chats []chats.Chat
+
+	uid := c.Param("id")
+	db.Model(&chats.Chat{}).Where("parent_id = ?", uid).Find(&chats)
+
+	c.JSON(200, chats)
 }
