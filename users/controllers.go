@@ -195,7 +195,15 @@ func UserListChat(c *gin.Context) {
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 	db := config.GetDB()
-	var chat chats.Chat
+	var chat = struct {
+		ParentID          string
+		ChildID           string
+		Nickname          string
+		Image             string
+		LastMessage       string
+		LastMessageStatus string
+		LastMessageTime   time.Time
+	}{}
 	var chats []chat
 
 	uid := c.Param("id")
