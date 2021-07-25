@@ -198,7 +198,7 @@ func UserListChat(c *gin.Context) {
 	var chats []chats.Chat
 
 	uid := c.Param("id")
-	db.Model(&chats.Chat{}).Where("parent_id = ?", uid).Find(&chats)
+	db.Model(&chats.Chat{}).Where("parent_id = ?", uid).Take(&chats)
 
 	c.JSON(200, chats)
 }
