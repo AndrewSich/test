@@ -1,7 +1,10 @@
 package messages
 
 import (
+	"fmt"
 	"time"
+
+	"test/config"
 )
 
 type Message struct {
@@ -63,19 +66,19 @@ func FindAllMessages(fid, tid string) []MsgStore {
 	var msgStore []MsgStore
 
 	db.Model(&Message{}).Where("to_id IN ? AND from_id IN ?", []string{tid, fid}, []string{fid, tid}).Find(&messages)
-	for i, message := range messages {
+	for _, message := range messages {
 		sender := true
-		if message[i].FromID == tid {
+		if message.FromID == tid {
 			sender = false
 		}
 		msg := MsgStore{
-			Uid:      message[i].FromID,
-			Tid:      message[i].ToID,
+			Uid:      message.FromID,
+			Tid:      message.ToID,
 			Sender:   sender,
-			Status:   message[i].Status,
-			Type:     message[i].Type,
-			Data:     message[i].Data,
-			SendTime: message[i].SendTime,
+			Status:   message.Status,
+			Type:     message.Type,
+			Data:     message.Data,
+			SendTime: message.SendTime,
 		}
 
 		msgStore = append(msgStore, msg)
