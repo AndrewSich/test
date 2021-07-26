@@ -66,7 +66,7 @@ func FindAllMessages(fid, tid string) []MsgStore {
 	var msgStore []MsgStore
 
 	//db.Model(&Message{}).Where("to_id IN ? AND from_id IN ?", []string{tid, fid}, []string{fid, tid}).Find(&messages)
-	db.Model(&Message{}).Where("to_id IN (?)", []string{tid, fid}).Find(&messages)
+	db.Model(&Message{}).Where("to_id IN (?) AND from_id IN (?)", []string{tid, fid}, []string{fid, tid}).Find(&messages)
 	fmt.Println(messages)
 	for _, message := range messages {
 		sender := true
