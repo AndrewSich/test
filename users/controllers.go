@@ -10,7 +10,7 @@ import (
 
 	"test/chats"
 	"test/config"
-	//"test/messages"
+	"test/messages"
 )
 
 type FormUser struct {
@@ -23,6 +23,12 @@ type FormUser struct {
 	ProfileImage string `json:"profile_image"`
 	BannerImage  string `json:"banner_image"`
 	Bio          string `json"bio"`
+}
+
+type FormMessage struct {
+	Type     string `json:"type"`
+	Data     string `json:"data"`
+	SendTime string `json:"send_time"`
 }
 
 // Find All User
@@ -204,7 +210,43 @@ func UserListChat(c *gin.Context) {
 
 	uid := c.Param("id")
 	data := chats.FindAllChat(uid)
-	fmt.Println(data)
+	//fmt.Println(data)
+
+	c.JSON(200, data)
+}
+
+// ========================== MESSAGES ================================
+func UserAddMessage(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+	var form FormMessage
+
+	if err := c.ShouldBindJSON(&form); err != nil {
+		fmt.Println("[FLOME] => error: ", err.Error())
+		c.JSON(400, gin.H{"data": err.Error()})
+		return
+	}
+
+	fid := c.Param("id")
+	tid := c.Param("tid")
+	tipe := form.Type
+	data := form.Data
+	time := form.SendTime
+
+	message := messages.CreateMessage(tid, fid, tipe, data, time)
+	c.JSON(200, message)
+}
+
+func UserListMessage(c *gin.Context) {
+	// CORS
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+	fid := c.Param("id")
+	tid := c.Param("tid")
+	data := messages.FindAllMessages(fid, tid)
 
 	c.JSON(200, data)
 }

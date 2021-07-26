@@ -12,6 +12,9 @@ func RouterUsers(route *gin.RouterGroup) {
 	route.POST("/:id/add", UserAddContact)
 	route.GET("/:id/list", UserListContact)
 	// route Chats
-	route.POST("/:id/chats/add", UserAddChat)
-	route.GET("/:id/chats/list", UserListChat)
+	route.POST("/:id/chats/add", UserAddChat)  // "/:id/chats" type POST
+	route.GET("/:id/chats/list", UserListChat) // "/:id/chats" type GET
+	// route message
+	route.POST("/:id/chats/:tid", UserAddMessage)
+	route.GET("/:id/chats/:tid", UserListMessage)
 }
