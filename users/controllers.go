@@ -26,9 +26,9 @@ type FormUser struct {
 }
 
 type FormMessage struct {
-	Type     string `json:"type"`
-	Data     string `json:"data"`
-	SendTime string `json:"send_time"`
+	Type     string    `json:"type"`
+	Data     string    `json:"data"`
+	SendTime time.Time `json:"send_time"`
 }
 
 // Find All User
