@@ -67,7 +67,6 @@ func FindAllMessages(fid, tid string) []MsgStore {
 
 	//db.Model(&Message{}).Where("to_id IN ? AND from_id IN ?", []string{tid, fid}, []string{fid, tid}).Find(&messages)
 	db.Model(&Message{}).Where("to_id IN (?) AND from_id IN (?)", []string{tid, fid}, []string{fid, tid}).Find(&messages)
-	fmt.Println(messages)
 	for _, message := range messages {
 		sender := true
 		if message.FromID == tid {
@@ -86,6 +85,5 @@ func FindAllMessages(fid, tid string) []MsgStore {
 		msgStore = append(msgStore, msg)
 	}
 
-	fmt.Println(msgStore)
 	return msgStore
 }
