@@ -31,7 +31,7 @@ func CheckExist(pid, cid string) bool {
 
 	db.Model(&Chat{}).Where("parent_id = ? AND child_id = ?", pid, cid).Take(&chat)
 	exist := true
-	if chat == nil {
+	if chat.ParentID == "" {
 		fmt.Println("[FLOME] => Chat not found!")
 		exist = false
 	}
