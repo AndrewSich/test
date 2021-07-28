@@ -216,7 +216,7 @@ func UserAddMessage(c *gin.Context) {
 	tid := c.Param("tid")
 	tipe := form.Type
 	data := form.Data
-	time := form.SendTime
+	timee := form.SendTime
 
 	// Add Chat
 	exist := chats.CheckExist(fid, tid)
@@ -235,7 +235,7 @@ func UserAddMessage(c *gin.Context) {
 		db.Model(&chats.Chat{}).Create(&chat)
 	}
 
-	message := messages.CreateMessage(tid, fid, tipe, data, time)
+	message := messages.CreateMessage(tid, fid, tipe, data, timee)
 	c.JSON(200, message)
 }
 

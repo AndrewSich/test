@@ -2,6 +2,8 @@ package users
 
 import (
 	"time"
+
+	"test/config"
 )
 
 type User struct {
