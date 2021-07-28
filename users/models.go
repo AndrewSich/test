@@ -29,3 +29,19 @@ type Profile struct {
 	Bio          string    `gorm:"column:bio" json:"bio"`
 	LastSeen     time.Time `gorm:"column:last_seen;default:CURRENT_TIMESTAMP" json:"last_seen"`
 }
+
+func GetAllUser() []User {
+	db := config.GetDB()
+	var users []User
+
+	db.Model(&User{}).Find(&users)
+	return users
+}
+
+func GetUserByID(uid string) User {
+	db := config.GetDB()
+	var user User
+
+	db.Model(&User{}).Where("id = ?", uid).Take(&user)
+	return user
+}

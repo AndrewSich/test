@@ -23,3 +23,17 @@ func FindAllChat(uid string) []Chat {
 	db.Model(&Chat{}).Where("parent_id = ?", uid).Find(&chats)
 	return chats
 }
+
+func CheckExist(pid, cid string) bool {
+	db := config.GetDB()
+	var chat Chat
+
+	db.Model(&Chat).Where("parent_id = ? AND child_id = ?", pid, cid).Take(&chat)
+	exist := true
+	if chat == nil {
+		fmt.Println("[FLOME] => Chat not found!")
+		exist = false
+	}
+
+	return exist
+}

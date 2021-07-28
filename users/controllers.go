@@ -36,13 +36,8 @@ func FindAllUser(c *gin.Context) {
 	// CORS
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	//c.Header("Access-Control-Allow-Credentials", "true")
-	// 	c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 
-	db := config.GetDB()
-	var users []User
-
-	db.Model(&User{}).Find(&users)
+	users := GetAllUser()
 	c.JSON(200, users)
 }
 
@@ -52,11 +47,8 @@ func FindUserByID(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	db := config.GetDB()
-	var user User
-
 	uid := c.Param("id")
-	db.Model(&User{}).Where("id = ?", uid).Take(&user)
+	user := GetUserByID(uid)
 
 	c.JSON(200, user)
 }
@@ -198,19 +190,8 @@ func UserListChat(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	// var chatt = []struct {
-	// 	ParentID          string    `json:"parent-id"`
-	// 	ChildID           string    `json:"child-id"`
-	// 	Nickname          string    `json:"nickname"`
-	// 	Image             string    `json:"image"`
-	// 	LastMessage       string    `json:"last-message"`
-	// 	LastMessageStatus string    `json:"last-message-status"`
-	// 	LastMessageTime   time.Time `json:"last-message-time"`
-	// }{}
-
 	uid := c.Param("id")
 	data := chats.FindAllChat(uid)
-	//fmt.Println(data)
 
 	c.JSON(200, data)
 }
@@ -221,8 +202,10 @@ func UserAddMessage(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	var form FormMessage
+	db := config.GetDB()
 
+	var profile Profile
+	var form FormMessage
 	if err := c.ShouldBindJSON(&form); err != nil {
 		fmt.Println("[FLOME] => error: ", err.Error())
 		c.JSON(400, gin.H{"data": err.Error()})
@@ -234,6 +217,23 @@ func UserAddMessage(c *gin.Context) {
 	tipe := form.Type
 	data := form.Data
 	time := form.SendTime
+
+	// Add Chat
+	exist := chats.CheckExist(fid, tid)
+	if exist == false {
+		db.Model(&Profile{}).Where("id = ?", tid).Take(&profile)
+		chat := chats.Chat{
+			ParentID:          fid,
+			ChildID:           tid,
+			Nickname:          profile.Nickname,
+			Image:             profile.ProfileImage,
+			LastMessage:       "Halloo",
+			LastMessageStatus: "wait",
+			LastMessageTime:   time.Now(),
+		}
+
+		db.Model(&chats.Chat{}).Create(&chat)
+	}
 
 	message := messages.CreateMessage(tid, fid, tipe, data, time)
 	c.JSON(200, message)
