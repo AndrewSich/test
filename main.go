@@ -1,3 +1,4 @@
+// Copyright (c) 2021 Andrew Setyawan.
 package main
 
 import (
